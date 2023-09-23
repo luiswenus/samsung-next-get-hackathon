@@ -1,13 +1,15 @@
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
-export default function EventItem({ event, handleCardPress }) {
+export default function EventItem({ event, isExpanded, handleCardPress }) {
+    const boxStyle = isExpanded ? [styles.box, styles.expandedBox] : styles.box;
+
     console.log(event)
     return (
         <TouchableOpacity
-            onPress={() => handleCardPress(item)}
+            onPress={handleCardPress}
         >
 
-            <View style={styles.box}>
+            <View style={boxStyle}>
                
                 <Text style={styles.titleText}>
                     {event?.title}
@@ -34,6 +36,10 @@ const styles = StyleSheet.create({
         paddingTop: 15, 
         paddingBottom: 15,
         marginTop: 12,
+    },
+    expandedBox: {
+        height: 810,  // Example value, adjust accordingly
+        // Add more styles to differentiate from the regular box
     },
     titleText: {
         color: 'white', 

@@ -7,8 +7,16 @@ import useFetch from '../hooks/useFetch';
 
 
 export default function EventScreen() {
-    const router = useRouter();
     const { data, isLoading, error } = useFetch();
+    const [expandedEventId, setExpandedEventId] = useState(null);
+
+    const handleCardPress = (eventId) => {
+        if (eventId === expandedEventId) {
+            setExpandedEventId(null);  // Collapse if the same item is clicked again
+        } else {
+            setExpandedEventId(eventId);  // Expand the clicked item
+        }
+    };
 
     console.log(data);
 
@@ -24,8 +32,9 @@ export default function EventScreen() {
                 <EventItem
                     event={event}
                     key={event.id}
-                    handleNavigate={() => router.push(`/event-details/${job.job_id}`)}
-                />
+                    isExpanded={event.id === expandedEventId}
+                    handleCardPress={() => handleCardPress(event.id)}
+                    />
                 )
             )}
         </View>
