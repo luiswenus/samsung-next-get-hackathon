@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { useRouter } from 'expo-router'
+import { useRef } from 'react';
+import { ScrollView } from 'react-native';
 import {StyleSheet, View, Text, TouchableOpacity, ActivityIndicator, FlatList} from 'react-native';
 import EventItem from './EventItem'
 import useFetch from '../hooks/useFetch';
@@ -9,19 +10,32 @@ import useFetch from '../hooks/useFetch';
 export default function EventScreen() {
     const { data, isLoading, error } = useFetch();
     const [expandedEventId, setExpandedEventId] = useState(null);
+    const [scrollPosition, setScrollPosition] = useState(0);
+
+    const scrollViewRef = useRef(null);
+    const eventItemRefs = useRef({});
+
 
     const handleCardPress = (eventId) => {
         if (eventId === expandedEventId) {
             setExpandedEventId(null);  // Collapse if the same item is clicked again
         } else {
             setExpandedEventId(eventId);  // Expand the clicked item
+            eventItemRefs.current[eventId].measure((fx, fy, width, height, px, py) => {
+                const adjustedPosition = scrollPosition + (py - scrollPosition) + 30 - height;
+                scrollViewRef.current.scrollTo({ y: adjustedPosition, animated: true });
+            });
         }
     };
 
-    console.log(data);
 
     return (
-      <View>
+    <ScrollView 
+    ref={scrollViewRef} 
+    onScroll={event => {
+      setScrollPosition(event.nativeEvent.contentOffset.y);
+    }}
+    scrollEventThrottle={16}>
         <View style={{marginTop: 10}}>
             {isLoading ? (
                 <ActivityIndicator color='#ffffff'/>
@@ -30,15 +44,16 @@ export default function EventScreen() {
             ) : (
                 data?.map((event) =>
                 <EventItem
+                    ref={(el) => eventItemRefs.current[event.divav1.S] = el}
                     event={event}
-                    key={event.id}
-                    isExpanded={event.id === expandedEventId}
-                    handleCardPress={() => handleCardPress(event.id)}
+                    key={event.divav1.S}
+                    isExpanded={event.divav1.S === expandedEventId}
+                    handleCardPress={() => handleCardPress(event.divav1.S)}
                     />
                 )
             )}
         </View>
-      </View>
+      </ScrollView>
     );
   }
   

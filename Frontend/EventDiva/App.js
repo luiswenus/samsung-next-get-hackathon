@@ -16,12 +16,9 @@ export default function App() {
     style={styles.linearGradient}
     > 
       <SafeAreaView style={{ flex: 1 }}>
-
-        <ScrollView showsHorizontalScrollIndicator={false}>
           <View style={{flex:1, padding: 10}}>
             <EventScreen/>
           </View>
-        </ScrollView>
       </SafeAreaView>
     </LinearGradient>
 
